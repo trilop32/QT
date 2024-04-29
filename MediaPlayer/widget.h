@@ -19,6 +19,10 @@ public:
 private slots:
     void on_pushButtonOpen_clicked();
 
+    void on_horizontalSliderVolume_valueChanged(int value);
+
+    void on_durationChanged(quint64 duration);
+
 private:
     Ui::Widget *ui;
     QMediaPlayer* m_player;
