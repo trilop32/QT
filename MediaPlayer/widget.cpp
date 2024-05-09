@@ -23,11 +23,11 @@ Widget::Widget(QWidget *parent)
     ui->labelVolume->setText(QString("Volume: ").append(QString::number(m_player->volume())));
     ui->horizontalSliderVolume->setValue(m_player->volume());
 
-
     connect(ui->pushButtonPlay,&QPushButton::clicked,this->m_player,&QMediaPlayer::play);
     connect(ui->pushButtonStop,&QPushButton::clicked,this->m_player,&QMediaPlayer::stop);
     connect(ui->pushButtonPouse,&QPushButton::clicked,this->m_player,&QMediaPlayer::pause);
     connect(m_player,&QMediaPlayer::durationChanged,this,&Widget::on_durationChanged);
+    connect(m_player,&QMediaPlayer::positionChanged,this,&Widget::on_positionChanged);
 }
 
 Widget::~Widget()
@@ -47,6 +47,10 @@ void Widget::on_pushButtonOpen_clicked()
    ui->labeleFile->setText(papka + ": " + song);
 
    m_player->setMedia(QUrl::fromLocalFile(file));
+}
+
+void Widget::on_pushButtonPlay_clicked()
+{
    m_player->play();
 }
 
@@ -67,6 +71,10 @@ void Widget::on_durationChanged(quint64 duration)
     ui->horizontalSliderProgress->setMaximum(duration);
     QTime qt_duration=QTime::fromMSecsSinceStartOfDay(duration);
     ui->labelDuration->setText(QString("Duration: ").append(qt_duration.toString(duration<3600000?"mm:ss":"hh:mm:ss")));
+}
 
+void Widget::on_positionChanged(qint64 position)
+{
+    ui->horizontalSliderProgress->setValue(position);
 }
 

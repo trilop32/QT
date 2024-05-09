@@ -25,6 +25,10 @@ private slots:
 
     void on_pushButtonMute_clicked();
 
+    void on_pushButtonPlay_clicked();
+
+    void on_positionChanged(qint64 position);
+
 private:
     Ui::Widget *ui;
     QMediaPlayer* m_player;
