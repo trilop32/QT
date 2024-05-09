@@ -43,8 +43,7 @@ void Widget::on_pushButtonOpen_clicked()
 
    QFileInfo fileInfo(file);
    QString song = fileInfo.baseName();
-   QString papka = fileInfo.dir().dirName();
-   ui->labeleFile->setText(papka + ": " + song);
+   ui->labeleFile->setText(windowTitle() + ": " + song);
 
    m_player->setMedia(QUrl::fromLocalFile(file));
 }
