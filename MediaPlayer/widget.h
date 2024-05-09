@@ -23,6 +23,8 @@ private slots:
 
     void on_durationChanged(quint64 duration);
 
+    void on_pushButtonMute_clicked();
+
 private:
     Ui::Widget *ui;
     QMediaPlayer* m_player;

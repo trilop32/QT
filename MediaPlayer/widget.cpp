@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <QStyle>
 #include <QTime>
+#include <QDir>
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
@@ -14,11 +15,14 @@ Widget::Widget(QWidget *parent)
     ui->pushButtonStop->setIcon(style()->standardIcon(QStyle::SP_MediaStop));
     ui->pushButtonPrev->setIcon(style()->standardIcon(QStyle::SP_MediaSkipBackward));
     ui->pushButtonNext->setIcon(style()->standardIcon(QStyle::SP_MediaSkipForward));
+    ui->pushButtonMute->setIcon(style()->standardIcon(QStyle::SP_MediaVolumeMuted));
     //Init player
 
     m_player=new QMediaPlayer();
+    m_player->setVolume(0);
     ui->labelVolume->setText(QString("Volume: ").append(QString::number(m_player->volume())));
     ui->horizontalSliderVolume->setValue(m_player->volume());
+
 
     connect(ui->pushButtonPlay,&QPushButton::clicked,this->m_player,&QMediaPlayer::play);
     connect(ui->pushButtonStop,&QPushButton::clicked,this->m_player,&QMediaPlayer::stop);
@@ -32,15 +36,25 @@ Widget::~Widget()
     delete ui;
 }
 
-
 void Widget::on_pushButtonOpen_clicked()
 {
    QString file=QFileDialog::getOpenFileName(this,"Open file",NULL,"Audio files()");
-   ui->labeleFile->setText(file);
+   /*ui->labeleFile->setText(file);*/
+
+   QFileInfo fileInfo(file);
+   QString song = fileInfo.baseName();
+   QString papka = fileInfo.dir().dirName();
+   ui->labeleFile->setText(papka + ": " + song);
+
    m_player->setMedia(QUrl::fromLocalFile(file));
    m_player->play();
 }
 
+void Widget::on_pushButtonMute_clicked()
+{
+    ui->horizontalSliderVolume->setValue(0);
+    ui->labelVolume->setText(QString("Volume: ").append(QString::number(0)));
+}
 
 void Widget::on_horizontalSliderVolume_valueChanged(int value)
 {
