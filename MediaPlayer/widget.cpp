@@ -38,7 +38,7 @@ Widget::~Widget()
 
 void Widget::on_pushButtonOpen_clicked()
 {
-   QString file=QFileDialog::getOpenFileName(this,"Open file",NULL,"Audio files()");
+   QString file=QFileDialog::getOpenFileName(this,"Open file",NULL,"Audio files(*mp3)");
    /*ui->labeleFile->setText(file);*/
 
    QFileInfo fileInfo(file);
