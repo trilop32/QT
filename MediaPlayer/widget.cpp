@@ -36,7 +36,7 @@ Widget::Widget(QWidget *parent)
     m_playlist_model->setHorizontalHeaderLabels(QStringList()<<"Audio track" << "File");
 
     ui->tableViewPlaylist->hideColumn(1);
-    ui->tableViewPlaylist->header()->setStretchLastSection(true);
+    ui->tableViewPlaylist->horizontalHeader()->setStretchLastSection(true);
     ui->tableViewPlaylist->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     m_playlist=new QMediaPlaylist(m_player);
@@ -122,7 +122,7 @@ void Widget::on_horizontalSliderProgress_valueChanged(int value)
 
 void Widget::on_current_Index_Changed(int position)
 {
-    //ui->tableViewPlaylist->selectRow(position);
+    ui->tableViewPlaylist->selectRow(position);
     QStandardItem* song = m_playlist_model->item(position,0);
     this->setWindowTitle(QString("MediaPlayer: ").append(song->text()));
     QStandardItem* file= m_playlist_model->item(position,1);
