@@ -4,6 +4,7 @@
 #include <QStyle>
 #include <QTime>
 #include <QDir>
+#include <QStandardItemModel>
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
@@ -46,6 +47,20 @@ Widget::Widget(QWidget *parent)
     connect(ui->pushButtonNext,&QPushButton::clicked,m_playlist,&QMediaPlaylist::next);
 
     connect(m_playlist,&QMediaPlaylist::currentIndexChanged,this,&Widget::on_current_Index_Changed);
+
+    QFile file("playlist.txt");
+    if (file.open(QIODevice::ReadOnly)) {
+        QTextStream stream(&file);
+        while (!stream.atEnd()) {
+            QString fileName = stream.readLine();
+            QList<QStandardItem*> items;
+            items.append(new QStandardItem(QDir(fileName).dirName()));
+            items.append(new QStandardItem(fileName));
+            m_playlist_model->appendRow(items);
+            m_playlist->addMedia(QUrl(fileName));
+        }
+        file.close();
+    }
 }
 
 Widget::~Widget()
@@ -127,5 +142,50 @@ void Widget::on_current_Index_Changed(int position)
     this->setWindowTitle(QString("MediaPlayer: ").append(song->text()));
     QStandardItem* file= m_playlist_model->item(position,1);
     ui->labeleFile->setText(QString("Song file: ").append(file->text()));
+}
+
+
+void Widget::on_pushButton_del_clicked()
+{
+    int selectedIndex = ui->tableViewPlaylist->selectionModel()->currentIndex().row();
+    m_playlist_model->removeRow(selectedIndex);
+}
+
+void Widget::on_pushButton_clr_clicked()
+{
+    m_player->stop();
+    m_playlist_model->clear();
+    m_playlist_model->setHorizontalHeaderLabels(QStringList()<<"Audio track" << "File");
+    ui->tableViewPlaylist->hideColumn(1);
+
+}
+
+void Widget::on_pushButton_shuf_clicked()
+{
+    srand(time(NULL));
+    int randomIndex = rand() % m_playlist_model->rowCount();
+
+    QStandardItem* randomSongItem = m_playlist_model->item(randomIndex, 1);
+    QUrl randomSongUrl = QUrl(randomSongItem->text());
+
+    m_playlist->setCurrentIndex(randomIndex);
+    m_player->setMedia(randomSongUrl);
+    m_player->play();
+}
+
+void Widget::on_pushButton_lop_clicked()
+{}
+
+void Widget::on_pushButton_save_clicked()
+{
+    QFile file("playlist.txt");
+    if (file.open(QIODevice::WriteOnly)) {
+        QTextStream stream(&file);
+        for (int row = 0; row < m_playlist_model->rowCount(); ++row) {
+            QString fileName = m_playlist_model->item(row, 1)->text();
+            stream << fileName << endl;
+        }
+        file.close();
+    }
 }
 

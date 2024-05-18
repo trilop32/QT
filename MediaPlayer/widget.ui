@@ -240,10 +240,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>L</string>
+    <string>&gt;?&lt;</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_shuffle">
+  <widget class="QPushButton" name="pushButton_shuf">
    <property name="geometry">
     <rect>
      <x>440</x>
@@ -253,7 +253,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>S</string>
+    <string>&lt;- ? -&gt;</string>
    </property>
   </widget>
   <widget class="QTableView" name="tableViewPlaylist">
@@ -264,6 +264,19 @@
      <width>551</width>
      <height>201</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_save">
+   <property name="geometry">
+    <rect>
+     <x>300</x>
+     <y>350</y>
+     <width>48</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Save</string>
    </property>
   </widget>
  </widget>

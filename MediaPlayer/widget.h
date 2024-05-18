@@ -35,6 +35,16 @@ private slots:
 
     void on_current_Index_Changed(int position);
 
+    void on_pushButton_del_clicked();
+
+    void on_pushButton_clr_clicked();
+
+    void on_pushButton_shuf_clicked();
+
+    void on_pushButton_lop_clicked();
+
+    void on_pushButton_save_clicked();
+
 private:
     Ui::Widget *ui;
     QMediaPlayer* m_player;
